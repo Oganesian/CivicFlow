@@ -41,7 +41,7 @@ import { staffApi, adminApi } from '../../api/client';
 import { StatusChip } from '../../components/StatusChip';
 import { PriorityChip } from '../../components/PriorityChip';
 import { SlaBadge } from '../../components/SlaBadge';
-import { useAuth } from '../../auth/AuthContext';
+import { useAuth } from '../../auth/useAuth';
 import { IssueStatus, Priority, CommentVisibility } from '../../api/types';
 import { format, parseISO } from 'date-fns';
 

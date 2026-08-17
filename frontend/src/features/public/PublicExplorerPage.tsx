@@ -29,7 +29,7 @@ import { publicApi } from '../../api/client';
 import { StatusChip } from '../../components/StatusChip';
 import { PriorityChip } from '../../components/PriorityChip';
 import { EmptyState } from '../../components/EmptyState';
-import { DISTRICTS } from '../../components/DistrictSelect';
+import { DISTRICTS } from '../../components/districts';
 import { IssueStatus } from '../../api/types';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 

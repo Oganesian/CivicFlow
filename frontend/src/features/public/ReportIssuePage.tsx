@@ -25,7 +25,8 @@ import SendIcon from '@mui/icons-material/Send';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { publicApi } from '../../api/client';
-import { DISTRICTS, DistrictSelect } from '../../components/DistrictSelect';
+import { DistrictSelect } from '../../components/DistrictSelect';
+import { DISTRICTS } from '../../components/districts';
 import { InteractiveMapPicker } from '../../components/InteractiveMapPicker';
 import { PublicIssue } from '../../api/types';
 

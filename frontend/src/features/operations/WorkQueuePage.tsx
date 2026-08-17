@@ -33,7 +33,7 @@ import { StatusChip } from '../../components/StatusChip';
 import { PriorityChip } from '../../components/PriorityChip';
 import { SlaBadge } from '../../components/SlaBadge';
 import { EmptyState } from '../../components/EmptyState';
-import { DISTRICTS } from '../../components/DistrictSelect';
+import { DISTRICTS } from '../../components/districts';
 import { IssueStatus, Priority } from '../../api/types';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 

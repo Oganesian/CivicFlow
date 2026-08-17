@@ -23,7 +23,7 @@ import HandymanOutlinedIcon from '@mui/icons-material/HandymanOutlined';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../auth/useAuth';
 
 export const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();

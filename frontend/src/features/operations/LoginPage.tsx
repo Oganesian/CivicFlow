@@ -17,7 +17,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import { useAuth } from '../../auth/AuthContext';
+import { useAuth } from '../../auth/useAuth';
 
 export const LoginPage: React.FC = () => {
   const { login } = useAuth();

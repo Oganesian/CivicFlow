@@ -22,7 +22,7 @@ import { StatusChip } from '../../components/StatusChip';
 import { PriorityChip } from '../../components/PriorityChip';
 import { SlaBadge } from '../../components/SlaBadge';
 import { EmptyState } from '../../components/EmptyState';
-import { useAuth } from '../../auth/AuthContext';
+import { useAuth } from '../../auth/useAuth';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 export const MyWorkPage: React.FC = () => {

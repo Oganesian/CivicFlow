@@ -1,13 +1,6 @@
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-
-export const DISTRICTS = [
-  'Mitte',
-  'Nordstadt',
-  'Westend',
-  'Ostend',
-  'Südviertel',
-];
+import { DISTRICTS } from './districts';
 
 interface DistrictSelectProps {
   value: string;
