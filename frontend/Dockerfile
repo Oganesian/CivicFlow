@@ -12,9 +12,33 @@ RUN npm run build
 FROM nginx:1.27-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Custom nginx configuration for SPA client routing
+# Custom nginx configuration for SPA routing and backend API proxying
 RUN echo 'server {' \
     '    listen 80;' \
+    '    location /api/ {' \
+    '        proxy_pass http://backend:8080;' \
+    '        proxy_http_version 1.1;' \
+    '        proxy_set_header Host $host;' \
+    '        proxy_set_header X-Real-IP $remote_addr;' \
+    '        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' \
+    '        proxy_set_header X-Forwarded-Proto $scheme;' \
+    '    }' \
+    '    location /v3/api-docs {' \
+    '        proxy_pass http://backend:8080;' \
+    '        proxy_http_version 1.1;' \
+    '        proxy_set_header Host $host;' \
+    '        proxy_set_header X-Real-IP $remote_addr;' \
+    '        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' \
+    '        proxy_set_header X-Forwarded-Proto $scheme;' \
+    '    }' \
+    '    location /swagger-ui {' \
+    '        proxy_pass http://backend:8080;' \
+    '        proxy_http_version 1.1;' \
+    '        proxy_set_header Host $host;' \
+    '        proxy_set_header X-Real-IP $remote_addr;' \
+    '        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' \
+    '        proxy_set_header X-Forwarded-Proto $scheme;' \
+    '    }' \
     '    location / {' \
     '        root /usr/share/nginx/html;' \
     '        index index.html index.htm;' \
