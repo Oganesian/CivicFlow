@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, Box } from '@mui/material';
+import { ThemeProvider, CssBaseline, Box, Alert } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { theme } from './theme';
 import { queryClient } from './queryClient';
@@ -31,6 +31,16 @@ import { AdminUsersPage } from '../features/admin/AdminUsersPage';
 import { CaseStudyPage } from '../features/docs/CaseStudyPage';
 
 export const App: React.FC = () => {
+  const [showDemoNote, setShowDemoNote] = useState(() => {
+    // Only show the note once per session (stored in sessionStorage)
+    return sessionStorage.getItem('civicflow_demo_note_dismissed') !== 'true';
+  });
+
+  const handleCloseDemoNote = () => {
+    setShowDemoNote(false);
+    sessionStorage.setItem('civicflow_demo_note_dismissed', 'true');
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
@@ -39,6 +49,11 @@ export const App: React.FC = () => {
           <BrowserRouter>
             <Box display="flex" flexDirection="column" minHeight="100vh">
               <Navbar />
+              {showDemoNote && (
+                <Alert severity="info" sx={{ m: 2, mb: 0 }} onClose={handleCloseDemoNote}>
+                  <strong>Demo Note:</strong> The backend may take 50-60 seconds to start after periods of inactivity. Please be patient if you experience delays on first load.
+                </Alert>
+              )}
               <Box component="main" flexGrow={1}>
                 <Routes>
                   {/* Public routes */}
