@@ -26,6 +26,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useQuery } from '@tanstack/react-query';
 import { staffApi } from '../../api/client';
 import { PriorityChip } from '../../components/PriorityChip';
+import { asArray } from '../../utils/safeArray';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 export const OperationsDashboardPage: React.FC = () => {
@@ -34,6 +35,9 @@ export const OperationsDashboardPage: React.FC = () => {
     queryFn: staffApi.getDashboardSummary,
     refetchInterval: 30000,
   });
+
+  const recentTriageQueue = asArray(summary?.recentTriageQueue);
+  const workloadByTeam = asArray(summary?.workloadByTeam);
 
   if (isLoading) {
     return (
@@ -189,14 +193,14 @@ export const OperationsDashboardPage: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {summary.recentTriageQueue.length === 0 ? (
+                  {recentTriageQueue.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={7} align="center" sx={{ py: 3, color: 'text.secondary' }}>
                         No pending reports awaiting triage. Great job!
                       </TableCell>
                     </TableRow>
                   ) : (
-                    summary.recentTriageQueue.map((issue) => (
+                    recentTriageQueue.map((issue) => (
                       <TableRow key={issue.id} hover>
                         <TableCell sx={{ fontFamily: 'monospace', fontWeight: 700 }}>
                           {issue.referenceCode}
@@ -243,8 +247,8 @@ export const OperationsDashboardPage: React.FC = () => {
             </Typography>
 
             <Box display="flex" flexDirection="column" gap={2.5}>
-              {summary.workloadByTeam.map((team) => {
-                const maxVal = Math.max(...summary.workloadByTeam.map((t) => t.activeIssueCount), 5);
+              {workloadByTeam.map((team) => {
+                const maxVal = Math.max(...workloadByTeam.map((t) => t.activeIssueCount), 5);
                 const pct = Math.round((team.activeIssueCount / maxVal) * 100);
 
                 return (

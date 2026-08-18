@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as z from 'zod';
+import { asArray } from '../utils/safeArray';
 
 const issueSchema = z.object({
   categoryId: z.string().min(1, 'Please select an issue category'),
@@ -56,5 +57,10 @@ describe('Report Issue Form Validation', () => {
 
     const result = issueSchema.safeParse(validWithoutEmail);
     expect(result.success).toBe(true);
+  });
+
+  it('treats missing paginated arrays as empty collections', () => {
+    expect(asArray(undefined)).toEqual([]);
+    expect(asArray([{ referenceCode: 'CF-2026-0001' }])).toHaveLength(1);
   });
 });

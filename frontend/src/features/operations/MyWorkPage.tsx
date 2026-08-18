@@ -23,6 +23,7 @@ import { PriorityChip } from '../../components/PriorityChip';
 import { SlaBadge } from '../../components/SlaBadge';
 import { EmptyState } from '../../components/EmptyState';
 import { useAuth } from '../../auth/useAuth';
+import { asArray } from '../../utils/safeArray';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 export const MyWorkPage: React.FC = () => {
@@ -32,6 +33,8 @@ export const MyWorkPage: React.FC = () => {
     queryKey: ['my-work'],
     queryFn: () => staffApi.getMyWork({ page: 0, size: 50, sort: 'dueAt,asc' }),
   });
+
+  const myWorkItems = asArray(myWorkData?.content);
 
   return (
     <Container maxWidth="xl" sx={{ py: 5 }}>
@@ -56,7 +59,7 @@ export const MyWorkPage: React.FC = () => {
           <Box display="flex" justifyContent="center" py={12}>
             <CircularProgress />
           </Box>
-        ) : !myWorkData || myWorkData.content.length === 0 ? (
+        ) : !myWorkData || myWorkItems.length === 0 ? (
           <EmptyState
             title="No Assigned Incidents"
             description="You have no pending field incidents assigned to you or your service team right now."
@@ -77,7 +80,7 @@ export const MyWorkPage: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {myWorkData.content.map((issue) => (
+                {myWorkItems.map((issue) => (
                   <TableRow key={issue.id} hover>
                     <TableCell sx={{ fontFamily: 'monospace', fontWeight: 700 }}>
                       {issue.referenceCode}

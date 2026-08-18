@@ -29,6 +29,7 @@ import { DistrictSelect } from '../../components/DistrictSelect';
 import { DISTRICTS } from '../../components/districts';
 import { InteractiveMapPicker } from '../../components/InteractiveMapPicker';
 import { PublicIssue } from '../../api/types';
+import { asArray } from '../../utils/safeArray';
 
 const issueSchema = z.object({
   categoryId: z.string().min(1, 'Please select an issue category'),
@@ -53,6 +54,8 @@ export const ReportIssuePage: React.FC = () => {
     queryFn: publicApi.getCategories,
   });
 
+  const categoryOptions = asArray(categories);
+
   const {
     control,
     handleSubmit,
@@ -73,7 +76,7 @@ export const ReportIssuePage: React.FC = () => {
 
   const selectedDistrict = watch('district') || DISTRICTS[0];
   const selectedCategoryId = watch('categoryId');
-  const selectedCategory = categories?.find((c) => c.id === selectedCategoryId);
+  const selectedCategory = categoryOptions.find((c) => c.id === selectedCategoryId);
 
   const mutation = useMutation({
     mutationFn: (values: IssueFormValues) =>
@@ -185,7 +188,7 @@ export const ReportIssuePage: React.FC = () => {
                       label="Issue Category *"
                       disabled={loadingCategories}
                     >
-                      {categories?.map((cat) => (
+                      {categoryOptions.map((cat) => (
                         <MenuItem key={cat.id} value={cat.id}>
                           {cat.name}
                         </MenuItem>

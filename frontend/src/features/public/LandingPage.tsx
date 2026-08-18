@@ -21,6 +21,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useQuery } from '@tanstack/react-query';
 import { publicApi } from '../../api/client';
 import { StatusChip } from '../../components/StatusChip';
+import { asArray } from '../../utils/safeArray';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 export const LandingPage: React.FC = () => {
@@ -28,6 +29,8 @@ export const LandingPage: React.FC = () => {
     queryKey: ['public-recent-issues'],
     queryFn: () => publicApi.searchIssues({ page: 0, size: 4, sort: 'createdAt,desc' }),
   });
+
+  const recentIssueList = asArray(recentIssues?.content);
 
   return (
     <Box>
@@ -259,7 +262,7 @@ export const LandingPage: React.FC = () => {
             </Box>
           ) : (
             <Grid container spacing={3}>
-              {recentIssues?.content.map((issue) => (
+              {recentIssueList.map((issue) => (
                 <Grid item xs={12} sm={6} md={3} key={issue.referenceCode}>
                   <Card
                     component={RouterLink}

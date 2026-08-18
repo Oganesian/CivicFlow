@@ -35,6 +35,7 @@ import { SlaBadge } from '../../components/SlaBadge';
 import { EmptyState } from '../../components/EmptyState';
 import { DISTRICTS } from '../../components/districts';
 import { IssueStatus, Priority } from '../../api/types';
+import { asArray } from '../../utils/safeArray';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 export const WorkQueuePage: React.FC = () => {
@@ -66,6 +67,8 @@ export const WorkQueuePage: React.FC = () => {
         sort: 'updatedAt,desc',
       }),
   });
+
+  const issues = asArray(issuesData?.content);
 
   const updateParam = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
@@ -213,7 +216,7 @@ export const WorkQueuePage: React.FC = () => {
           <Box display="flex" justifyContent="center" py={12}>
             <CircularProgress />
           </Box>
-        ) : !issuesData || issuesData.content.length === 0 ? (
+        ) : !issuesData || issues.length === 0 ? (
           <EmptyState
             title="No Incidents Match Filter"
             description="Adjust your search parameters or clear filters to view all issues in the work queue."
@@ -238,7 +241,7 @@ export const WorkQueuePage: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {issuesData.content.map((issue) => (
+                  {issues.map((issue) => (
                     <TableRow key={issue.id} hover>
                       <TableCell sx={{ fontFamily: 'monospace', fontWeight: 700 }}>
                         {issue.referenceCode}

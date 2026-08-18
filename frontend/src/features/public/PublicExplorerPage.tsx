@@ -31,6 +31,7 @@ import { PriorityChip } from '../../components/PriorityChip';
 import { EmptyState } from '../../components/EmptyState';
 import { DISTRICTS } from '../../components/districts';
 import { IssueStatus } from '../../api/types';
+import { asArray } from '../../utils/safeArray';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 export const PublicExplorerPage: React.FC = () => {
@@ -48,6 +49,8 @@ export const PublicExplorerPage: React.FC = () => {
     queryFn: publicApi.getCategories,
   });
 
+  const categoryOptions = asArray(categories);
+
   const { data: issuesData, isLoading } = useQuery({
     queryKey: ['public-issues', category, status, district, search, page],
     queryFn: () =>
@@ -61,6 +64,8 @@ export const PublicExplorerPage: React.FC = () => {
         sort: 'createdAt,desc',
       }),
   });
+
+  const issues = asArray(issuesData?.content);
 
   const updateParam = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
@@ -117,7 +122,7 @@ export const PublicExplorerPage: React.FC = () => {
                 onChange={(e) => updateParam('category', e.target.value)}
               >
                 <MenuItem value="">All Categories</MenuItem>
-                {categories?.map((cat) => (
+                {categoryOptions.map((cat) => (
                   <MenuItem key={cat.id} value={cat.slug}>
                     {cat.name}
                   </MenuItem>
@@ -191,7 +196,7 @@ export const PublicExplorerPage: React.FC = () => {
         <Box display="flex" justifyContent="center" py={12}>
           <CircularProgress />
         </Box>
-      ) : !issuesData || issuesData.content.length === 0 ? (
+      ) : !issuesData || issues.length === 0 ? (
         <EmptyState
           title="No Issues Found"
           description="There are no public reports matching your current filter criteria."
@@ -201,7 +206,7 @@ export const PublicExplorerPage: React.FC = () => {
       ) : viewMode === 'list' ? (
         <>
           <Grid container spacing={3}>
-            {issuesData.content.map((issue) => (
+            {issues.map((issue) => (
               <Grid item xs={12} sm={6} md={4} key={issue.referenceCode}>
                 <Card
                   component={RouterLink}
@@ -318,7 +323,7 @@ export const PublicExplorerPage: React.FC = () => {
               backgroundSize: '24px 24px, 48px 48px, 48px 48px',
             }}
           >
-            {issuesData.content.map((issue, idx) => {
+            {issues.map((issue, idx) => {
               // Distribute pins visibly across districts on map
               const offsets = [
                 { top: '30%', left: '48%' },
