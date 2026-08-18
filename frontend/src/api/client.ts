@@ -14,8 +14,10 @@ import {
   CommentVisibility,
 } from './types';
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '/api';
+
 export const apiClient = axios.create({
-  baseURL: '/api',
+  baseURL: apiBaseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
